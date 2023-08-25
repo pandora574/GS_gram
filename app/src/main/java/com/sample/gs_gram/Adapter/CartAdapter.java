@@ -46,7 +46,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     if (listener != null) {
                         listener.onItemClick(data.get(clickedPosition));
                     }
-                    remove(clickedPosition); // 선택된 항목 삭제
                 }
             }
         });

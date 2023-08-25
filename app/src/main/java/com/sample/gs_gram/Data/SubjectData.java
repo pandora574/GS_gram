@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class SubjectData implements Serializable {
     private String subject;
     private String credit;
+    private String grade;
     private String term;
     private String field;
     private String code;
@@ -50,4 +51,12 @@ public class SubjectData implements Serializable {
     public String getCode() {return code;}
 
     public void setCode(String code) {this.code = code;}
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
 }

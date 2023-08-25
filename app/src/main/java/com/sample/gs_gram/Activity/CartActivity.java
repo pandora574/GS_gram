@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private TextView termText, yearText,set_button;
+    private TextView gradeText, termText, yearText,set_button;
     private RecyclerView saveRecyclerView;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mStore;
@@ -51,6 +51,7 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_cart);
 
+        gradeText = findViewById(R.id.gradeText);
         termText = findViewById(R.id.termText);
         yearText = findViewById(R.id.yearText);
         set_button = findViewById(R.id.set_button);
@@ -83,11 +84,19 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
+        gradeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] gradeOptions = {"1학년", "2학년", "3학년", "4학년","5학년"};
+                showSelectionDialog("수강 학년을 선택해주세요", gradeOptions, gradeText);
+            }
+        });
+
         termText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] termOptions = {"1학년 1학기","1학년 2학기","2학년 1학기","2학년 2학기","3학년 1학기","3학년 2학기","4학년 1학기","4학년 2학기","5학년 1학기","5학년 2학기","1학년 여름계절학기","1학년 겨울계절학기","2학년 여름계절학기","2학년 겨울계절학기","3학년 여름계절학기","3학년 겨울계절학기","4학년 여름계절학기","4학년 겨울계절학기"};
-                showSelectionDialog("수강 학년, 학기를 선택해주세요.", termOptions, termText);
+                String[] termOptions = {"1학기","2학기", "여름계절학기","겨울계절학기"};
+                showSelectionDialog("수강 학기를 선택해주세요.", termOptions, termText);
             }
         });
 
@@ -110,6 +119,7 @@ public class CartActivity extends AppCompatActivity {
             data.setSubject(subjectData.getSubject());
             data.setDivition(subjectData.getDivition());
             data.setTerm(subjectData.getTerm());
+            data.setGrade(subjectData.getGrade());
             data.setCredit(subjectData.getCredit());
             data.setCode(subjectData.getCode());
             data.setField(subjectData.getField());
@@ -149,12 +159,15 @@ public class CartActivity extends AppCompatActivity {
     }
     private void loadData(){
         String strYear = yearText.getText().toString();
+        String strGrade = gradeText.getText().toString();
         String strTerm = termText.getText().toString();
 
         if (strYear.length() == 0) {
             Toast.makeText(CartActivity.this, "수강 년도를 선택해주세요.", Toast.LENGTH_SHORT).show();
+        } else if (strGrade.length() == 0) {
+            Toast.makeText(CartActivity.this, "이수 학년을 선택해주세요.", Toast.LENGTH_SHORT).show();
         } else if (strTerm.length() == 0) {
-            Toast.makeText(CartActivity.this, "이수 학년, 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CartActivity.this, "이수 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
         }else {
             CollectionReference collectionReference = mStore.collection("UserDataList");
             DocumentReference documentReference = collectionReference.document(mAuth.getUid());
@@ -166,10 +179,11 @@ public class CartActivity extends AppCompatActivity {
                 itemData.put("subject", subjectData.getSubject());
                 itemData.put("divition", subjectData.getDivition());
                 itemData.put("term", subjectData.getTerm());
+                itemData.put("grade",subjectData.getGrade());
                 itemData.put("credit", subjectData.getCredit());
                 itemData.put("code", subjectData.getCode());
                 itemData.put("field", subjectData.getField());
-                itemData.put("period", strYear + " " + strTerm);
+                itemData.put("period", strYear + " " + strGrade+" "+ strTerm);
 
                 dataArray.put(subjectData.getCode(), itemData);
             }

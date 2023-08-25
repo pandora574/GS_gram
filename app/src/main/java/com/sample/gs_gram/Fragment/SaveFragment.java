@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SaveFragment extends Fragment {
-    private TextView termText, divitionText;
+    private TextView gradeText,termText, divitionText;
     private Button view_button, cart_button;
     private RecyclerView subjectRecyclerView;
     private SaveAdapter mAdapter;
@@ -52,6 +52,7 @@ public class SaveFragment extends Fragment {
 
         divitionText = view.findViewById(R.id.divitionText);
         termText = view.findViewById(R.id.termText);
+        gradeText = view.findViewById(R.id.gradeText);
         view_button = view.findViewById(R.id.view_button);
         cart_button = view.findViewById(R.id.cart_button);
         subjectRecyclerView = view.findViewById(R.id.subjectRecyclerView);
@@ -83,11 +84,19 @@ public class SaveFragment extends Fragment {
             }
         });
 
+        gradeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] gradeOptions = {"1학년","2학년","3학년","4학년"};
+                showSelectionDialog("학년을 선택해주세요", gradeOptions, gradeText);
+            }
+        });
+
         termText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] termOptions = {"1학년 1학기","1학년 2학기","2학년 1학기","2학년 2학기","3학년 1학기","3학년 2학기","4학년 1학기","4학년 2학기"};
-                showSelectionDialog("학년, 학기를 선택해주세요.", termOptions, termText);
+                String[] termOptions = {"1학기","2학기"};
+                showSelectionDialog("학기를 선택해주세요.", termOptions, termText);
             }
         });
 
@@ -131,15 +140,18 @@ public class SaveFragment extends Fragment {
     }
     public void ViewSubjectData(){
         String strDivition = divitionText.getText().toString();
+        String strGrade = gradeText.getText().toString();
         String strTerm = termText.getText().toString();
 
         if (strDivition.length() == 0) {
             Toast.makeText(getContext(), "이수 구분을 선택해주세요.", Toast.LENGTH_SHORT).show();
-        } else if (strTerm.length() == 0) {
-            Toast.makeText(getContext(), "교과목 학년과 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
+        }else if(strGrade.length() == 0){
+            Toast.makeText(getContext(), "교과목 학년을 선택해주세요", Toast.LENGTH_SHORT).show();
+        }else if (strTerm.length() == 0) {
+            Toast.makeText(getContext(), "교과목 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
         } else {
             if (strDivition.equals("교양")) {
-                fetchSubjectData("전학과/" + strDivition + "/전학년 전학기");
+                fetchSubjectData("전학과/" + strDivition + "/전학기");
             } else {
                 fetchSubjectData(UserMajor + "/" + strDivition + "/" + strTerm);
             }
@@ -148,30 +160,57 @@ public class SaveFragment extends Fragment {
     }
     private void fetchSubjectData(String collectionPath) {
         ArrayList<SubjectData> mDatas = new ArrayList<>();
+        String strDivition = divitionText.getText().toString();
+        String strGrade = gradeText.getText().toString();
         mStore.collection(collectionPath).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Map<String, Object> shot = documentSnapshot.getData();
-                        SubjectData data = new SubjectData();
-                        data.setDivition(String.valueOf(shot.get("divition")));
-                        data.setSubject(String.valueOf(shot.get("subject")));
-                        data.setTerm(String.valueOf(shot.get("term")));
-                        data.setCredit(String.valueOf(shot.get("credit")));
-                        data.setCode(String.valueOf(shot.get("code")));
-                        data.setField(String.valueOf(shot.get("field")));
+                        String documentGrade = String.valueOf(shot.get("grade")); // Get the grade from the document
+                        if (strGrade.equals(documentGrade)) { // Compare with strGrade
+                            SubjectData data = new SubjectData();
+                            data.setDivition(String.valueOf(shot.get("divition")));
+                            data.setSubject(String.valueOf(shot.get("subject")));
+                            data.setGrade(documentGrade); // Set the grade
+                            data.setTerm(String.valueOf(shot.get("term")));
+                            data.setCredit(String.valueOf(shot.get("credit")));
+                            data.setCode(String.valueOf(shot.get("code")));
+                            data.setField(String.valueOf(shot.get("field")));
 
-                        boolean isCodeAlreadySelected = false;
-                        for (SubjectData selectedData : selectedItems) {
-                            if (selectedData.getCode().equals(data.getCode())) {
-                                isCodeAlreadySelected = true;
-                                break;
+                            boolean isCodeAlreadySelected = false;
+                            for (SubjectData selectedData : selectedItems) {
+                                if (selectedData.getCode().equals(data.getCode())) {
+                                    isCodeAlreadySelected = true;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (!isCodeAlreadySelected) {
-                            mDatas.add(data);
+                            if (!isCodeAlreadySelected) {
+                                mDatas.add(data);
+                            }
+                        } else if (strDivition.equals("교양")) {
+                            SubjectData data = new SubjectData();
+                            data.setDivition(String.valueOf(shot.get("divition")));
+                            data.setSubject(String.valueOf(shot.get("subject")));
+                            data.setGrade(String.valueOf(shot.get("grade")));
+                            data.setTerm(String.valueOf(shot.get("term")));
+                            data.setCredit(String.valueOf(shot.get("credit")));
+                            data.setCode(String.valueOf(shot.get("code")));
+                            data.setField(String.valueOf(shot.get("field")));
+
+                            boolean isCodeAlreadySelected = false;
+                            for (SubjectData selectedData : selectedItems) {
+                                if (selectedData.getCode().equals(data.getCode())) {
+                                    isCodeAlreadySelected = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isCodeAlreadySelected) {
+                                mDatas.add(data);
+                            }
                         }
                     }
                     mAdapter = new SaveAdapter(mDatas);

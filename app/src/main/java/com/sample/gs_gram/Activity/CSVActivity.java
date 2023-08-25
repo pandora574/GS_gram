@@ -86,16 +86,17 @@ public class CSVActivity extends AppCompatActivity {
         for (int i = 0; i < contentList.size(); i++){
             String collectionName1 = contentList.get(i).get(0); // 학과
             String documentName1 = contentList.get(i).get(1); // 이수 구분 (교양/교선/교필/전선/전필)
-            String collectionName2 = contentList.get(i).get(3);//학년+학기
-            String documentName2 =  contentList.get(i).get(5); //교과목번호
+            String collectionName2 = contentList.get(i).get(4);//학기
+            String documentName2 =  contentList.get(i).get(6); //교과목번호
 
             Map<String, Object> data = new HashMap<>();
             data.put("divition",contentList.get(i).get(1)); //이수구분
             data.put("subject",contentList.get(i).get(2)); //과목명
-            data.put("term",contentList.get(i).get(3)); //학년+학기
-            data.put("credit",contentList.get(i).get(4)); //학점
-            data.put("code",contentList.get(i).get(5)); //교과목번호
-            data.put("field",contentList.get(i).get(6)); //교양구분
+            data.put("grade",contentList.get(i).get(3)); //학년
+            data.put("term",contentList.get(i).get(4)); //학기
+            data.put("credit",contentList.get(i).get(5)); //학점
+            data.put("code",contentList.get(i).get(6)); //교과목번호
+            data.put("field",contentList.get(i).get(7)); //교양구분
 
             CollectionReference collectionReference1 = mStore.collection(collectionName1);
             DocumentReference documentReference1 = collectionReference1.document(documentName1);
@@ -115,6 +116,7 @@ public class CSVActivity extends AppCompatActivity {
                     } else {
                         documentReference2.set(data);
                     }
+                    finish();
                 }
             });
         }

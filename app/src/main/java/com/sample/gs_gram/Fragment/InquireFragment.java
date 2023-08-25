@@ -77,6 +77,8 @@ public class InquireFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 InquireData();
+                yearText.setText("");
+                termText.setText("");
             }
         });
 
@@ -103,7 +105,43 @@ public class InquireFragment extends Fragment {
         String strTerm = termText.getText().toString();
         String period = strYear + " " +strTerm;
 
-        if (strYear.length() == 0) {
+        if (strYear.length() == 0 && strTerm.length()==0) {
+            CollectionReference collectionReference = mStore.collection("UserDataList");
+            DocumentReference documentReference = collectionReference.document(mAuth.getUid());
+
+            documentReference.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> userData = documentSnapshot.getData();
+
+                        // userData에서 각 item을 추출하여 mDatas에 추가
+                        ArrayList<SubjectData> mDatas = new ArrayList<>();
+                        for (Map.Entry<String, Object> entry : userData.entrySet()) {
+                            String code = entry.getKey();
+                            Map<String, Object> itemData = (Map<String, Object>) entry.getValue();
+
+                            SubjectData data = new SubjectData();
+                            data.setCode(code);
+                            data.setSubject(String.valueOf(itemData.get("subject")));
+                            data.setDivition(String.valueOf(itemData.get("divition")));
+                            data.setTerm(String.valueOf(itemData.get("term")));
+                            data.setCredit(String.valueOf(itemData.get("credit")));
+                            data.setCode(String.valueOf(itemData.get("code")));
+                            data.setField(String.valueOf(itemData.get("field")));
+
+                            mDatas.add(data);
+
+                        }
+
+                        // 여기서부터는 어댑터 설정과 화면 업데이트 코드가 들어갑니다.
+                        mAdapter = new InquireAdapter(mDatas);
+                        inquireRecyclerView.setLayoutManager(layoutManager);
+                        inquireRecyclerView.setAdapter(mAdapter);
+                    }
+                }
+            });
+        } else if (strYear.length() == 0) {
             Toast.makeText(getContext(), "이수 년도를 선택해주세요.", Toast.LENGTH_SHORT).show();
         } else if (strTerm.length() == 0) {
             Toast.makeText(getContext(), "조회할 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
@@ -138,7 +176,6 @@ public class InquireFragment extends Fragment {
                                 mDatas.add(data);
                             }
                         }
-
                         // 여기서부터는 어댑터 설정과 화면 업데이트 코드가 들어갑니다.
                         mAdapter = new InquireAdapter(mDatas);
                         inquireRecyclerView.setLayoutManager(layoutManager);
