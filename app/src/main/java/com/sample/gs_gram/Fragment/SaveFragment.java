@@ -160,18 +160,19 @@ public class SaveFragment extends Fragment {
                         data.setTerm(String.valueOf(shot.get("term")));
                         data.setCredit(String.valueOf(shot.get("credit")));
                         data.setCode(String.valueOf(shot.get("code")));
+                        data.setField(String.valueOf(shot.get("field")));
 
-                        if(selectedItems != null){
-                            for (int i=0; i<=selectedItems.size(); i++){
-                                if (String.valueOf(shot.get("code")) == selectedItems.get(i).getCode()){
-
-                                }
+                        boolean isCodeAlreadySelected = false;
+                        for (SubjectData selectedData : selectedItems) {
+                            if (selectedData.getCode().equals(data.getCode())) {
+                                isCodeAlreadySelected = true;
+                                break;
                             }
                         }
 
-
-                        data.setField(String.valueOf(shot.get("field")));
-                        mDatas.add(data);
+                        if (!isCodeAlreadySelected) {
+                            mDatas.add(data);
+                        }
                     }
                     mAdapter = new SaveAdapter(mDatas);
                     subjectRecyclerView.setLayoutManager(layoutManager);

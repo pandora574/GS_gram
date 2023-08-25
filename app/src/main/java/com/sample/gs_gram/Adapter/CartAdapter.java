@@ -74,7 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }
     }
     public interface OnItemClickListener{
-        void onItemClick(SubjectData subjectData);
+        void onItemClick(SubjectData clickedData);
     }
     public void setOnItemClickListener(OnItemClickListener listener){this.listener = listener;}
 }

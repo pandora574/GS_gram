@@ -121,8 +121,9 @@ public class CartActivity extends AppCompatActivity {
         saveRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new CartAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(SubjectData subjectData) {
-                Toast.makeText(CartActivity.this, "삭제 클릭", Toast.LENGTH_SHORT).show();
+            public void onItemClick(SubjectData clickedData) {
+                mDatas.remove(clickedData);
+                mAdapter.notifyDataSetChanged();
             }
         });
 
