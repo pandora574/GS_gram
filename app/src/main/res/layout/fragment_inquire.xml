@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="2">
+        <TextView
+            android:id="@+id/yearText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="이수 년도"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/input_background_ev" />
+
+        <TextView
+            android:id="@+id/termText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="이수 학기"
+            android:gravity="center"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/input_background_ev"
+            android:layout_weight="1"
+            android:padding="8dp" />
+        <TextView
+            android:id="@+id/inquire_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조회"
+            android:background="@drawable/btn_background"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inquireRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarSize="5dp"
+        android:scrollbarThumbVertical="@color/black"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/linear">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>

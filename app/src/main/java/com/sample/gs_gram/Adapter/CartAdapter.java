@@ -1,0 +1,80 @@
+package com.sample.gs_gram.Adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.sample.gs_gram.Data.SubjectData;
+import com.sample.gs_gram.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
+    private ArrayList<SubjectData> data;
+    private CartAdapter.OnItemClickListener listener;
+
+    public CartAdapter(ArrayList<SubjectData> data){this.data = data;}
+
+    @NonNull
+    @Override
+    public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.item_cart, parent, false);
+        CartAdapter.ViewHolder viewHolder = new CartAdapter.ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
+        SubjectData item = data.get(position);
+
+        holder.textview_subject.setText(item.getSubject());
+        holder.textview_divition.setText(item.getDivition());
+
+        holder.textview_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int clickedPosition = holder.getAdapterPosition();
+                if (clickedPosition!=RecyclerView.NO_POSITION){
+                    if (listener != null) {
+                        listener.onItemClick(data.get(clickedPosition));
+                    }
+                    remove(clickedPosition); // 선택된 항목 삭제
+                }
+            }
+        });
+
+
+    }
+    public void remove(int position){
+        if (position >= 0 && position < data.size()) {
+            data.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    @Override
+    public int getItemCount() {return (data != null ? data.size() : 0);}
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView textview_divition, textview_subject, textview_delete;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textview_divition = itemView.findViewById(R.id.textview_divition);
+            textview_subject = itemView.findViewById(R.id.textview_subject);
+            textview_delete = itemView.findViewById(R.id.textview_delete);
+        }
+    }
+    public interface OnItemClickListener{
+        void onItemClick(SubjectData subjectData);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){this.listener = listener;}
+}
