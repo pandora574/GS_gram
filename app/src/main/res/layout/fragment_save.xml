@@ -7,61 +7,73 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
         <TextView
             android:id="@+id/divitionText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="이수 구분"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:padding="10dp"
-            android:textSize="18sp"/>
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="교과목 구분"
+            android:padding="8dp" />
+
         <TextView
             android:id="@+id/gradeText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="교과목 학년"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:padding="10dp"
-            android:textSize="18sp"/>
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="교과목 학년"
+            android:padding="8dp" />
+
         <TextView
             android:id="@+id/termText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:hint="교과목 학기"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:padding="10dp"
-            android:textSize="18sp"/>
-        <Button
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="교과목 학기"
+            android:padding="8dp" />
+
+        <TextView
             android:id="@+id/view_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_background"
+            android:gravity="center"
+            android:padding="8dp"
             android:text="조회"
-            android:layout_weight="1.2"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subjectRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbarFadeDuration="0"
         android:scrollbarSize="5dp"
         android:scrollbarThumbVertical="@color/black"
-        android:scrollbars="vertical"
-        android:layout_weight="1">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
+
     <Button
         android:id="@+id/cart_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="선택내역"/>
+        android:text="선택내역" />
 
 
 </LinearLayout>

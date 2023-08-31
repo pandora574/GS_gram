@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SaveFragment extends Fragment {
-    private TextView gradeText,termText, divitionText;
-    private Button view_button, cart_button;
+    private TextView gradeText,termText, divitionText, view_button;
+    private Button cart_button;
     private RecyclerView subjectRecyclerView;
     private SaveAdapter mAdapter;
     private FirebaseFirestore mStore;

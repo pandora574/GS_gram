@@ -37,6 +37,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.textview_subject.setText(item.getSubject());
         holder.textview_divition.setText(item.getDivition());
+        holder.textview_term.setText(item.getTerm());
 
         holder.textview_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,13 +64,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public int getItemCount() {return (data != null ? data.size() : 0);}
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textview_divition, textview_subject, textview_delete;
+        private TextView textview_divition, textview_subject, textview_delete, textview_term;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textview_divition = itemView.findViewById(R.id.textview_divition);
             textview_subject = itemView.findViewById(R.id.textview_subject);
             textview_delete = itemView.findViewById(R.id.textview_delete);
+            textview_term = itemView.findViewById(R.id.textview_term);
         }
     }
     public interface OnItemClickListener{

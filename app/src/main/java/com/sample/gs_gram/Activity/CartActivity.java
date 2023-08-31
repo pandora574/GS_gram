@@ -169,34 +169,48 @@ public class CartActivity extends AppCompatActivity {
         } else if (strTerm.length() == 0) {
             Toast.makeText(CartActivity.this, "이수 학기를 선택해주세요.", Toast.LENGTH_SHORT).show();
         }else {
-            CollectionReference collectionReference = mStore.collection("UserDataList");
-            DocumentReference documentReference = collectionReference.document(mAuth.getUid());
-
-            Map<String, Object> dataArray = new HashMap<>();
+            boolean compareTerm = true;
 
             for (SubjectData subjectData : mDatas) {
-                Map<String, Object> itemData = new HashMap<>();
-                itemData.put("subject", subjectData.getSubject());
-                itemData.put("divition", subjectData.getDivition());
-                itemData.put("term", subjectData.getTerm());
-                itemData.put("grade",subjectData.getGrade());
-                itemData.put("credit", subjectData.getCredit());
-                itemData.put("code", subjectData.getCode());
-                itemData.put("field", subjectData.getField());
-                itemData.put("period", strYear + " " + strGrade+" "+ strTerm);
-
-                dataArray.put(subjectData.getCode(), itemData);
+                String term = subjectData.getTerm();
+                if (!term.equals(strTerm) && !term.equals("전학기")) {
+                    compareTerm = false; // Set the flag to false if a non-matching term is found
+                    break; // No need to check further
+                }
             }
 
-            documentReference.set(dataArray, SetOptions.merge())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            finish();
-                        }
-                    });
+            if (compareTerm) {
+                CollectionReference collectionReference = mStore.collection("UserDataList");
+                DocumentReference documentReference = collectionReference.document(mAuth.getUid());
 
+                Map<String, Object> dataArray = new HashMap<>();
+
+                for (SubjectData subjectData : mDatas) {
+                    Map<String, Object> itemData = new HashMap<>();
+                    itemData.put("subject", subjectData.getSubject());
+                    itemData.put("divition", subjectData.getDivition());
+                    itemData.put("term", subjectData.getTerm());
+                    itemData.put("grade",subjectData.getGrade());
+                    itemData.put("credit", subjectData.getCredit());
+                    itemData.put("code", subjectData.getCode());
+                    itemData.put("field", subjectData.getField());
+                    itemData.put("period", strYear + " " + strGrade+" "+ strTerm);
+
+                    dataArray.put(subjectData.getCode(), itemData);
+                }
+
+                documentReference.set(dataArray, SetOptions.merge())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(CartActivity.this, "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+            } else {
+                Toast.makeText(CartActivity.this, strTerm+" 과목이 아닙니다. 다시 확인해주세요", Toast.LENGTH_SHORT).show();
             }
         }
+    }
 
 }

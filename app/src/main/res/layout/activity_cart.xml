@@ -13,53 +13,57 @@
         android:theme="@style/Toolbar"/>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/yearText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
-            <TextView
-                android:id="@+id/yearText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="수강 년도"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/gradeText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="수강 학년"
-                android:padding="10dp"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/termText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="수강 학기"
-                android:padding="10dp"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/set_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/btn_background"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:padding="8dp"
-                android:text="저장"
-           />
-        </LinearLayout>
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="수강 년도"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/gradeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="수강 학년"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/termText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_background_ev"
+            android:gravity="center"
+            android:hint="수강 학기"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/set_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_background"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="저장"
+            android:textColor="@color/white" />
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saveRecyclerView"
         android:layout_width="match_parent"
